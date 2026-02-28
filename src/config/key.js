@@ -1,0 +1,4 @@
+export const APIKEY = "ab9c151db4cc54374c4ae9e3a178bd80"
+
+//chave para ser usada no projeto do senai-flix
+//token "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYjljMTUxZGI0Y2M1NDM3NGM0YWU5ZTNhMTc4YmQ4MCIsIm5iZiI6MTc3MjMwOTcyMi4yODMsInN1YiI6IjY5YTM0Y2RhNzNkNTRjMTM0YzE4NzY4OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ikUXlX_QT51x-9GPQucWPbwJMAF0dfAJRcqTUB2saVo"
