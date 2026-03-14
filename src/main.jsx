@@ -6,7 +6,6 @@ import App from './App.jsx'
 import Details from './Details/Details.jsx'
 import Favorites from './Favoritos/Favoritos.jsx'
 
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>

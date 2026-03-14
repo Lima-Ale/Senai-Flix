@@ -17,10 +17,22 @@ function Favorites(){
         setFavs(savedFavs)
      },[])
 
+     function removeFavorite(){
+        const updateFavs = favs.filter(movie => movie.id !== id)
+        setFavs(updateFavs)
+        localStorage.setItem('favorites',JSON.stringify(updateFavs))
+     }
+
      
 return(<>
 <Header/>
 <Container>
+    {favs.length === 0 ?(
+        <p style={{textAlign:'center', marginTop:'3rem', color:'#aaa'}}>
+            Você ainda não salvou nenhum item como favorito!
+        </p>
+
+    ):(
     <MovieList>
         {favs.map(movie => 
             (<Movie key={movie.id}>
@@ -29,8 +41,14 @@ return(<>
                 alt={movie.title}/>
                 </Link>
               <span>{movie.title}</span>  
+
+              <button className="favorite-btn active"
+              onClick={()=> removeFavorite(movie.id)}
+              >Remover
+              </button>
             </Movie>))}
     </MovieList>
+    )}
 </Container>
 <Footer/>
 </>)
