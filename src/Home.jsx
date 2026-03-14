@@ -1,7 +1,7 @@
 import { APIKEY } from "./config/key";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Container, Movie, MovieList, SearchBar } from "./style";
+import { Container, Movie, MovieList, SearchBar } from "./style.js";
 
 function Home() {
   const img_path = "https://image.tmdb.org/t/p/w500/";
@@ -20,32 +20,29 @@ function Home() {
     setLoading(true);
 
     const fetchMovies = fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${APIKEY}&language=pt-BR`,
+      `https://api.themoviedb.org/3/movie/popular?api_key=${APIKEY}&language=pt-BR`
     ).then((res) => res.json());
 
     const fetchSeries = fetch(
-      `https://api.themoviedb.org/3/tv/popular?api_key=${APIKEY}&language=pt-BR`,
+      `https://api.themoviedb.org/3/tv/popular?api_key=${APIKEY}&language=pt-BR`
     ).then((res) => res.json());
 
     Promise.all([fetchMovies, fetchSeries])
       .then(([movieData, seriesData]) => {
         setMovies(movieData.results || []);
         setSeries(seriesData.results || []);
-        setLoading(false);
       })
       .catch((error) => {
         console.error("Erro ao buscar dados no servidor do TMDB:", error);
-        setLoading(false);
-      });
-  }, []); // importante para não fazer loop infinito
+      })
+      .finally(() => setLoading(false)); // Garante que o loading será desativado no final, independentemente do sucesso ou falha.
+  }, []); // Importante para não fazer loop infinito
 
   const filtrar = (lista) => {
     return lista.filter((item) => {
       const nomeDoItem = (item.title || item.name).toLowerCase();
       const matchesSearch = nomeDoItem.includes(search.toLowerCase());
-
-      const matchesGenre =
-        genero === "" || item.genre_ids.includes(Number(genero));
+      const matchesGenre = genero === "" || item.genre_ids.includes(Number(genero));
       return matchesSearch && matchesGenre;
     });
   };
@@ -54,16 +51,16 @@ function Home() {
     <Container>
       <SearchBar>
         <div className="field-group">
-          <label>O QUE VOCE PROCURA</label>
+          <label>O QUE VOCÊ PROCURA</label>
           <input
             type="text"
-            placeholder="Ex Batman, Matrix, Avengers"
+            placeholder="Ex: Batman, Matrix, Avengers"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         <div className="field-group">
-          <label>GENERO</label>
+          <label>GÊNERO</label>
           <select value={genero} onChange={(e) => setGenero(e.target.value)}>
             <option value="">Todos os Gêneros</option>
             <option value="28">Ação</option>
@@ -72,32 +69,47 @@ function Home() {
             <option value="27">Terror</option>
           </select>
         </div>
-        <button className="btn-limpar" onClick={() => {setSearch('');
-            setGenero('')
-        }}>Limpar Filtros</button>
+        <button 
+          className="btn-limpar" 
+          onClick={() => {
+            setSearch('');
+            setGenero('');
+          }}
+        >
+          Limpar Filtros
+        </button>
       </SearchBar>
-      <>
-      <h2>Filmes Populares</h2>
-      <MovieList>
-        {filtrar(movies).map(movie =>
-            <Movie key={movie.id}>
-                <img src= {`${img_path}${movie.poster_path}`} alt={movie.title}/>
+
+      {loading ? ( // Feedback de carregamento
+        <p>Carregando...</p>
+      ) : (
+        <>
+          <h2>Filmes Populares</h2>
+          <MovieList>
+            {filtrar(movies).map(movie => (
+              <Movie key={movie.id}>
+                <Link to={`/details/movie/${movie.id}`}>
+                  <img src={`${img_path}${movie.poster_path}`} alt={movie.title} />
+                </Link>
                 <span>{movie.title}</span>
-            </Movie>
-        )}
-      </MovieList>
-      </>
-      <>
-      <h2>Series Populares</h2>
-      <MovieList>
-        {filtrar(series).map(series =>
-            <Movie key={series.id}>
-                <img src= {`${img_path}${series.poster_path}`} alt={series.name}/>
-                <span>{series.name}</span>
-            </Movie>
-        )}
-      </MovieList>
-      </>
+              </Movie>
+            ))}
+          </MovieList>
+
+          <h2>Séries Populares</h2>
+          <MovieList>
+            {filtrar(movies).map(series => (
+              <Movie key={series.id}>
+                <Link to={`/details/tv/${series.id}`}>
+                  <img src={`${img_path}${series.poster_path}`} alt={series.title} />
+                </Link>  
+                <span>{series.title}</span>
+              </Movie>
+            ))}
+          </MovieList>
+
+        </>
+      )}
     </Container>
   );
 }

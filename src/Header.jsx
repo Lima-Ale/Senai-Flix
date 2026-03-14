@@ -1,21 +1,25 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 const HeaderContainer = styled.header`
   background-color: #000;
   padding: 1rem 50px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   position: sticky;
   top: 0;
+
   z-index: 1000;
+
   border-bottom: 1px solid #333;
 
   .logo {
     color: red;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
     text-decoration: none;
     letter-spacing: 2px;
@@ -24,54 +28,101 @@ const HeaderContainer = styled.header`
   nav {
     display: flex;
     gap: 25px;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #e50914;
+      }
+    }
   }
 
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: 0.4s ease-in-out;
+  .hamburger-menu {
+    display: none;
+    cursor: pointer;
+    font-size: 2rem;
+    color: white;
   }
 
-  nav a:hover {
-    color: red;
+  .menu-mobile {
+    display: ${props => (props.open ? 'flex' : 'none')};
+    flex-direction: column;
+    position: absolute;
+
+    top: 70px;
+    right: 20px;
+
+    background: #111;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #444;
+
+    gap: 15px;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
   }
-`;
+
+  @media (max-width: 1023px) {
+    nav {
+      display: none;
+    }
+
+    .hamburger-menu {
+      display: block;
+    }
+  }
+`
 
 function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
+
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
     <HeaderContainer open={menuOpen}>
-      {/*LOGO*/}
-      <Link to="/" className="logo">
-        Senaiflix
+
+      <Link to='/' className='logo'>
+        SENAIFLIX
       </Link>
-      {/*=== Botao Hambuguer*/}
-      <div className="hamburger-menu" onClick={() => setMenuOpen(!menuOpen)}>
+
+      <div
+        className='hamburger-menu'
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
         <span>&#9776;</span>
       </div>
+
       <nav>
         <Link to='/'>Inicio</Link>
-        <Link  to='/tipo=movie'>Filme</Link>
-        <Link  to='/tipo=tv'>Series</Link>
-        <Link  to='/tipo=favorite'>Favoritos</Link>
+        <Link to='/?tipo=movie'>Filmes</Link>
+        <Link to='/?tipo=tv'>Series</Link>
+        <Link to='/favorites'>Favoritos</Link>
       </nav>
-      <div className="menu-mobile">
+
+      <div className='menu-mobile'>
+
         <Link to='/' onClick={() => setMenuOpen(false)}>
           Inicio
         </Link>
-        <Link to='/tipo=movie' onClick={() => setMenuOpen(false)}>
-          Filme
+
+        <Link to='/?tipo=movie' onClick={() => setMenuOpen(false)}>
+          Filmes
         </Link>
-        <Link to='/tipo=tv' onClick={() => setMenuOpen(false)}>
+
+        <Link to='/?tipo=tv' onClick={() => setMenuOpen(false)}>
           Series
         </Link>
-        <Link to='/tipo=favorite' onClick={() => setMenuOpen(false)}>
-          Favoritos
-        </Link>
+
       </div>
+
     </HeaderContainer>
-  );
+  )
 }
 
-export default Header;
+export default Header
