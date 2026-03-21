@@ -4,7 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './global.css'
 import App from './App.jsx'
 import Details from './Details/Details.jsx'
-import Favorites from './Favoritos/Favoritos.jsx'
+import Favorites from './Favoritos/favoritos.jsx'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
