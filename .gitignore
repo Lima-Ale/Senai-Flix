@@ -23,4 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
+#APIkey
 key.env
+
+src/config/key.js
