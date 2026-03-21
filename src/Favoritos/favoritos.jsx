@@ -1,8 +1,8 @@
 import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Container, MovieList,  Movie } from "../style";
 import Header from "../Header";
 import Footer from "../Footer";
-import { Container, MovieList,  Movie } from "../style";
 
 function Favorites() {
   const [favs, setFavs] = useState([]);
